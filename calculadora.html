@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simulação Calculadora - Cana-de-açúcar</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Simulação Calculadora - Cana-de-açúcar</h1>
+        </header>
+
+        <div class="calculator-grid">
+            <!-- Seção de Parâmetros de Entrada -->
+            <div class="input-section">
+                <h2>Parâmetros de Entrada</h2>
+                
+                <div class="input-group">
+                    <label for="preco-cana">Preço da cana (R$/t):</label>
+                    <input type="number" id="preco-cana" placeholder="Ex: 150" step="0.01" required>
+                </div>
+
+                <div class="input-group">
+                    <label for="produtividade-esperada">Produtividade esperada (t/ha):</label>
+                    <input type="number" id="produtividade-esperada" placeholder="Ex: 100" step="0.1" required>
+                </div>
+
+                <div class="input-group">
+                    <label for="preco-cbio">Preço de CBIO (R$):</label>
+                    <input type="number" id="preco-cbio" placeholder="Ex: 70" step="0.01" required>
+                </div>
+
+                <div class="input-group">
+                    <label for="area-total">Área total (ha):</label>
+                    <input type="number" id="area-total" placeholder="Ex: 5000" step="1" required>
+                </div>
+
+                <div class="input-group">
+                    <label for="corretivo-tratamento">Corretivo do tratamento padrão:</label>
+                    <select id="corretivo-tratamento" required>
+                        <option value="">Selecione um corretivo</option>
+                        <option value="Calcário calcítico">Calcário calcítico</option>
+                        <option value="Calcário dolomítico">Calcário dolomítico</option>
+                        <option value="Calcário magnesiano">Calcário magnesiano</option>
+                        <option value="Gesso agrícola">Gesso agrícola</option>
+                        <option value="Calcário calcinado">Calcário calcinado</option>
+                    </select>
+                </div>
+
+                <div class="input-group">
+                    <label for="dose-por-area">Dose por área (toneladas/ha):</label>
+                    <input type="number" id="dose-por-area" placeholder="Ex: 5.00" step="0.01" required>
+                </div>
+
+                <div class="input-group">
+                    <label for="intervalo-aplicacoes">Intervalo entre aplicações (anos):</label>
+                    <input type="number" id="intervalo-aplicacoes" placeholder="Ex: 4.00" step="0.01" required>
+                </div>
+
+                <div class="button-group">
+                    <button type="button" id="btn-calcular" class="btn-calcular">Calcular</button>
+                </div>
+            </div>
+
+            <!-- Seção de Resultados -->
+            <div class="results-section hidden" id="results-section">
+                <h2>Resultados</h2>
+
+                <!-- Tratamento Padrão -->
+                <div class="treatment-column">
+                    <h3>Tratamento padrão</h3>
+                    
+                    <div class="result-group">
+                        <label>Produto utilizado:</label>
+                        <span id="produto-utilizado-padrao">Calcário calcítico</span>
+                    </div>
+
+                    <div class="result-group">
+                        <label>Dose por área (toneladas/ha):</label>
+                        <span id="dose-area-padrao">5.00</span>
+                    </div>
+
+                    <div class="result-group">
+                        <label>Intervalo entre aplicações (anos):</label>
+                        <span id="intervalo-padrao">4</span>
+                    </div>
+
+                    <div class="result-group">
+                        <label>Preço estimado referência CIF* (R$/t):</label>
+                        <span id="preco-estimado-padrao">195.00</span>
+                    </div>
+
+                    <div class="result-group">
+                        <label>Custo (R$/ha):</label>
+                        <span id="custo-ha-padrao">243.75</span>
+                    </div>
+
+                    <div class="result-group">
+                        <label>Custo total (R$):</label>
+                        <span id="custo-total-padrao">1.218.750,00</span>
+                    </div>
+
+                    <div class="result-group">
+                        <label>Produtividade esperada ATR (t/ha):</label>
+                        <span id="produtividade-atr-padrao">14,7</span>
+                    </div>
+
+                    <div class="result-group">
+                        <label>Receita por área (R$/ha):</label>
+                        <span id="receita-area-padrao">15.000,00</span>
+                    </div>
+
+                    <div class="result-group">
+                        <label>Receita total (R$):</label>
+                        <span id="receita-total-padrao">75.000.000,00</span>
+                    </div>
+
+                    <div class="result-group">
+                        <label>Ganhos CBIOs (ha):</label>
+                        <span id="ganhos-cbios-ha-padrao">-</span>
+                    </div>
+
+                    <div class="result-group">
+                        <label>Ganhos CBIOs total (R$):</label>
+                        <span id="ganhos-cbios-total-padrao">-</span>
+                    </div>
+
+                    <div class="result-group">
+                        <label>Receita líquida total (R$):</label>
+                        <span id="receita-liquida-padrao">73.781.250,00</span>
+                    </div>
+                </div>
+
+                <!-- Programa Caltec OXIFLUX -->
+                <div class="treatment-column">
+                    <h3>Programa Caltec OXIFLUX</h3>
+                    
+                    <div class="result-group">
+                        <label>Produto utilizado:</label>
+                        <span id="produto-utilizado-oxiflux">OXIFLUX</span>
+                    </div>
+
+                    <div class="result-group">
+                        <label>Dose por área (toneladas/ha):</label>
+                        <span id="dose-area-oxiflux">-</span>
+                    </div>
+
+                    <div class="result-group">
+                        <label>Intervalo entre aplicações (anos):</label>
+                        <span id="intervalo-oxiflux">1</span>
+                    </div>
+
+                    <div class="result-group">
+                        <label>Preço estimado referência CIF* (R$/t):</label>
+                        <span id="preco-estimado-oxiflux">1.020,00</span>
+                    </div>
+
+                    <div class="result-group">
+                        <label>Custo (R$/ha):</label>
+                        <span id="custo-ha-oxiflux">-</span>
+                    </div>
+
+                    <div class="result-group">
+                        <label>Custo total (R$):</label>
+                        <span id="custo-total-oxiflux">-</span>
+                    </div>
+
+                    <div class="result-group">
+                        <label>Produtividade esperada ATR (t/ha):</label>
+                        <span id="produtividade-atr-oxiflux">17,2</span>
+                    </div>
+
+                    <div class="result-group">
+                        <label>Receita por área (R$/ha):</label>
+                        <span id="receita-area-oxiflux">17.550,00</span>
+                    </div>
+
+                    <div class="result-group">
+                        <label>Receita total (R$):</label>
+                        <span id="receita-total-oxiflux">87.750.000,00</span>
+                    </div>
+
+                    <div class="result-group">
+                        <label>Ganhos CBIOs (ha):</label>
+                        <span id="ganhos-cbios-ha-oxiflux">2,60</span>
+                    </div>
+
+                    <div class="result-group">
+                        <label>Ganhos CBIOs total (R$):</label>
+                        <span id="ganhos-cbios-total-oxiflux">910.000,00</span>
+                    </div>
+
+                    <div class="result-group">
+                        <label>Receita líquida total (R$):</label>
+                        <span id="receita-liquida-oxiflux">88.660.000,00</span>
+                    </div>
+                </div>
+
+                <!-- Lucro Líquido -->
+                <div class="profit-section">
+                    <h3>Lucro líquido total com OXIFLUX (R$)</h3>
+                    <div class="profit-value" id="lucro-liquido-total">14.878.750,00</div>
+                    <p class="disclaimer">*Preço baseado em valores aproximados do ano de 2024 para a região de Ribeirão Preto, SP</p>
+                </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
+
